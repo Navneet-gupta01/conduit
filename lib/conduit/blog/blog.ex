@@ -41,10 +41,10 @@ defmodule Conduit.Blog do
   def author_by_username!(username, nil), do: Repo.get_by!(Author, username: username)
   def author_by_username!(username, follower) do
     author = author_by_username!(username)
-
-    %Author{author |
-      following: Enum.member?(author.followers || [], follower.uuid),
-    }
+author
+    # %Author{author |
+    #   following: Enum.member?(author.followers || [], follower.uuid),
+    # }
   end
 
   @doc """
@@ -217,7 +217,7 @@ defmodule Conduit.Blog do
       |> DeleteComment.assign_comment(comment)
       |> DeleteComment.deleted_by(author)
 
-    Router.dispatch(delete_comment)
+    Router.dispatch(delete_comment, consistency: :strong)
   end
 
   defp get(schema, uuid) do

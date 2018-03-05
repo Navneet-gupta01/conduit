@@ -15,8 +15,8 @@ defmodule Conduit.Storage do
 
   defp reset_eventstore do
     {:ok, conn} =
-      EventStore.configuration()
-      |> EventStore.Config.parse()
+      EventStore.Config.parsed()
+      |> EventStore.Config.default_postgrex_opts()
       |> Postgrex.start_link()
 
     EventStore.Storage.Initializer.reset!(conn)
